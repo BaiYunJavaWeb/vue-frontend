@@ -4,10 +4,10 @@
     <a-layout-header class="layout">
       <div class="title">Shopping</div>
       <a-menu
-        v-model:selectedKeys="selectedKeys"
+        v-model:selectedKeys="homeStore.selectedKeys"
         mode="horizontal"
-        :style="{ lineHeight: '64px', backgroundColor: 'white' }"
-        @click="handleClick"
+        :style="{ lineHeight: '64px', backgroundColor: 'white', width: '100%' }"
+        @click="homeStore.handleClick"
       >
         <a-menu-item key="1">首页</a-menu-item>
         <a-sub-menu popupClassName="submen" key="2">
@@ -16,7 +16,11 @@
           </template>
           <template #title>商品分类</template>
           <a-menu-item-group title="商品分类">
-            <a-menu-item :type="foodtype.id" v-for="foodtype in typeList" :key="`2-${foodtype.id}`">
+            <a-menu-item
+              :type="foodtype.id"
+              v-for="foodtype in homeStore.typeList"
+              :key="`2-${foodtype.id}`"
+            >
               {{ foodtype.name }}
             </a-menu-item>
           </a-menu-item-group>
@@ -37,7 +41,7 @@
     </a-layout-header>
     <a-layout-content>
       <div class="content">
-        <Component :is="currentComponent" />
+        <Component :is="homeStore.currentComponent" />
       </div>
     </a-layout-content>
     <a-layout-footer style="text-align: center">
@@ -46,52 +50,10 @@
   </a-layout>
 </template>
 <script setup lang="ts">
-import Index from '@/components/Index/Index.vue'
-import Hot from '@/components/Hot/Hot.vue'
-import New from '@/components/New/New.vue'
-import Register from '@/components/Register/Register.vue'
-import Login from '@/components/Login/Login.vue'
-import { reactive, ref, shallowRef } from 'vue'
 import { ExpandAltOutlined } from '@ant-design/icons-vue'
 import { useHomeStore } from '@/stores/home.store'
 const homeStore = useHomeStore()
-
-const selectedKeys = ref<string[]>(['1'])
-const currentComponent = shallowRef(Index)
-
-interface IType {
-  id: number
-  name: string
-}
-
-let typeList: IType[] = reactive([])
-
-homeStore.getTypeList().then((data: IType[]) => {
-  typeList = data
-})
-
-const handleClick = (e: any) => {
-  switch (e.key) {
-    case '1':
-      currentComponent.value = Index
-      break
-    case '3':
-      currentComponent.value = Hot
-      break
-    case '4':
-      currentComponent.value = New
-      break
-    case '8':
-      currentComponent.value = Register
-      break
-    case '9':
-      currentComponent.value = Login
-      break
-    default:
-      currentComponent.value = Index
-      break
-  }
-}
+homeStore.getTypeList()
 </script>
 <style scoped>
 .bg {
