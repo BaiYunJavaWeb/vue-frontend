@@ -1,13 +1,11 @@
 <template>
   <div class="new">
     <a-alert style="height: 60px; margin: 20px 0" message="新品推荐" type="info" />
-    {{ newList }}
+    {{ props.item }}
   </div>
 </template>
 
 <script setup lang="ts">
-import { onUpdated, ref } from 'vue'
-
 interface Item {
   id: number
   name: string
@@ -18,15 +16,11 @@ interface Item {
   intro: string
   stock: number
   typeId: number
+  type?: string
 }
 
-const newList = ref<Item[]>()
-
-onUpdated(() => {
-  newList.value = props.item
-})
 const props = defineProps<{
-  item?: Array<Item>
+  item: Array<Item>
 }>()
 </script>
 

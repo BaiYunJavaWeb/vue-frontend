@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="jbanner && jhot && jnew">
     <IndexBanner :item="jbanner" />
     <IndexHot :item="jhot" />
     <IndexNew :item="jnew" />

@@ -1,28 +1,19 @@
 <template>
   <div class="banner">
     <div>
-      <div class="one">{{ itemname }}</div>
+      <div class="one">{{ props.item[0].name }}</div>
       <div class="two">今日精选推荐</div>
       <div class="three">加入购物车</div>
     </div>
     <div>
-      <img :src="itemimage" width="350" height="350" />
+      <img :src="'http://localhost:1314/' + props.item[0].cover" width="350" height="350" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onUpdated, ref } from 'vue'
-
-const itemname = ref()
-const itemimage = ref()
-
-onUpdated(() => {
-  itemname.value = props.item![0].name
-  itemimage.value = 'http://localhost:1314/' + props.item![0].cover
-})
 const props = defineProps<{
-  item?: Array<{
+  item: Array<{
     id: number
     name: string
     cover: string

@@ -51,10 +51,11 @@ import Hot from '@/components/Hot/Hot.vue'
 import New from '@/components/New/New.vue'
 import Register from '@/components/Register/Register.vue'
 import Login from '@/components/Login/Login.vue'
-import { ref, shallowRef } from 'vue'
+import { reactive, ref, shallowRef } from 'vue'
 import { ExpandAltOutlined } from '@ant-design/icons-vue'
 import { useHomeStore } from '@/stores/home.store'
 const homeStore = useHomeStore()
+
 const selectedKeys = ref<string[]>(['1'])
 const currentComponent = shallowRef(Index)
 
@@ -63,10 +64,10 @@ interface IType {
   name: string
 }
 
-const typeList = ref<IType[]>()
+let typeList: IType[] = reactive([])
 
-homeStore.getTypeList().then((data) => {
-  typeList.value = data as IType[]
+homeStore.getTypeList().then((data: IType[]) => {
+  typeList = data
 })
 
 const handleClick = (e: any) => {

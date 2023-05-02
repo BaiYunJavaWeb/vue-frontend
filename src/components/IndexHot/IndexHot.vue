@@ -1,12 +1,13 @@
 <template>
   <div class="hot">
     <a-alert style="height: 60px; margin: 20px 0" message="热销推荐" type="error" />
-    {{ hotList }}
+    <div>
+      {{ props.item }}
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onUpdated, reactive, ref } from 'vue'
 interface Item {
   id: number
   name: string
@@ -17,15 +18,11 @@ interface Item {
   intro: string
   stock: number
   typeId: number
+  type?: string
 }
 
-const hotList = ref<Item[]>()
-
-onUpdated(() => {
-  hotList.value = props.item
-})
 const props = defineProps<{
-  item?: Array<Item>
+  item: Array<Item>
 }>()
 </script>
 
