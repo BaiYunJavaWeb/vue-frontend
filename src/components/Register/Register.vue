@@ -47,7 +47,7 @@
     v-model:visible="visible"
     title="注册"
     @ok="handleOk"
-    @cancel="handleOk"
+    @cancel="handleCancel"
     okText="确定"
     cancelText="取消"
     :keyboard="false"
@@ -66,6 +66,8 @@ const homeStore = useHomeStore()
 const visible = ref<boolean>(false)
 
 const modalmsg = ref<string>('')
+
+const registerStatus = ref<number>()
 
 interface FormState {
   username: string
@@ -91,7 +93,10 @@ const onFinish = (values: any) => {
       'content-type': 'application/json'
     }
   })
-    .then((res) => res.json())
+    .then((res) => {
+      registerStatus.value = res.status
+      return res.json()
+    })
     .then((data) => {
       modalmsg.value = data.msg
       visible.value = true
@@ -104,8 +109,15 @@ const onFinishFailed = (errorInfo: any) => {
 
 const handleOk = () => {
   visible.value = false
+  if (registerStatus.value == 400) {
+    return
+  }
   homeStore.selectedKeys = ['9']
   homeStore.currentComponent = Login
+}
+
+const handleCancel = () => {
+  visible.value = false
 }
 </script>
 
