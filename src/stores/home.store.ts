@@ -7,7 +7,8 @@ interface IType {
 
 export const useHomeStore = defineStore('home', {
   state: () => ({
-    userLogged: false
+    userLogged: false,
+    typeList: [] as IType[]
   }),
   actions: {
     async getTypeList(): Promise<IType[]> {
@@ -15,7 +16,11 @@ export const useHomeStore = defineStore('home', {
         fetch('http://localhost:1314/type/typeList')
           .then((res) => res.json())
           .then((data) => {
+            this.typeList = data.msg.typeList
             resolve(data.msg.typeList)
+          })
+          .catch((err) => {
+            reject(err)
           })
       })
     }

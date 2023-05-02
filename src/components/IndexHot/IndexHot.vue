@@ -1,13 +1,37 @@
 <template>
-  <div class="hot">
-    <a-alert style="height: 60px; margin: 20px 0" message="热销推荐" type="error" />
-    <div>
-      {{ props.item }}
+  <div class="wrap">
+    <div class="hot">
+      <a-alert style="height: 60px; margin: 20px 0" message="热销推荐" type="error" />
+      <div class="list">
+        <div style="margin: 10px" v-for="item in props.item" :key="item.name">
+          <img
+            :src="'http://localhost:1314/' + item.cover"
+            width="350"
+            @mouseenter="show($event)"
+            @mouseleave="hide($event)"
+          />
+          <div class="detail" @mouseenter="show($event)" @mouseleave="hide($event)">
+            <div style="cursor: pointer" @click="detail(item.id)"><eye-outlined />查看详情</div>
+            <div style="cursor: pointer" @click="incart(item.id)" class="inchart">加入购物车</div>
+          </div>
+          <div>
+            <div class="misc" v-if="homeStore.typeList">
+              {{ homeStore.typeList.find((type) => type.id === item.typeId)?.name }}
+              >
+              {{ item.name }}
+            </div>
+            <div style="font-size: 1.5em; color: #999">￥{{ item.price }}</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { EyeOutlined } from '@ant-design/icons-vue'
+import { useHomeStore } from '@/stores/home.store'
+const homeStore = useHomeStore()
 interface Item {
   id: number
   name: string
@@ -24,13 +48,63 @@ interface Item {
 const props = defineProps<{
   item: Array<Item>
 }>()
+
+const show = (e: any) => {
+  e.target.parentNode.querySelector('.detail').style.display = 'flex'
+}
+
+const hide = (e: any) => {
+  e.target.parentNode.querySelector('.detail').style.display = 'none'
+}
+
+const detail = (id: number) => {
+  console.log(`查看详情${id}`)
+}
+
+const incart = (id: number) => {
+  console.log(`加入购物车${id}`)
+}
 </script>
 
 <style scoped>
-.hot {
-  padding: 0 200px;
+.wrap {
   background-color: white;
   margin-top: 100px;
   padding-top: 10px;
+}
+.hot {
+  width: 1140px;
+  margin: 0 auto;
+}
+.list {
+  display: flex;
+  flex-wrap: wrap;
+}
+.misc {
+  font-size: 1em;
+  color: #000;
+  margin: 1em 0 0;
+  font-weight: 600;
+}
+.detail {
+  display: none;
+  justify-content: space-around;
+  height: 36px;
+  align-items: center;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.499);
+  position: absolute;
+  width: 350px;
+  transform: translateY(-36px);
+}
+.inchart {
+  border: 2px solid #fff;
+  font-size: 0.8em;
+  padding: 0.3em 1.5em;
+  transition: 0.5s all ease;
+}
+.inchart:hover {
+  border-color: #f07818;
+  color: #f07818;
 }
 </style>
