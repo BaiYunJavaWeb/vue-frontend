@@ -1,0 +1,79 @@
+<template>
+  <div class="banner">
+    <div>
+      <div class="one">{{ itemname }}</div>
+      <div class="two">今日精选推荐</div>
+      <div class="three">加入购物车</div>
+    </div>
+    <div>
+      <img :src="itemimage" width="350" height="350" />
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { onUpdated, ref } from 'vue'
+
+const itemname = ref()
+const itemimage = ref()
+
+onUpdated(() => {
+  itemname.value = props.item![0].name
+  itemimage.value = 'http://localhost:1314/' + props.item![0].cover
+})
+const props = defineProps<{
+  item?: Array<{
+    id: number
+    name: string
+    cover: string
+    image1: string
+    image2: string
+    price: number
+    intro: string
+    stock: number
+    typeId: number
+  }>
+}>()
+</script>
+
+<style scoped>
+.banner {
+  position: relative;
+  background-color: #f2f6f7;
+  padding: 12em 0 0;
+  min-height: 600px;
+  display: flex;
+  justify-content: space-evenly;
+}
+.one {
+  font-size: 6em;
+  font-family: 'Marvel-Regular';
+  color: #5d4b33;
+  font-weight: 800;
+  transition: 0.5s all ease;
+  cursor: pointer;
+}
+.one:hover,
+.three:hover {
+  color: #f07818;
+}
+.three:hover {
+  border: 7px solid #f07818;
+}
+.two {
+  font-size: 1.3em;
+  margin: 1em 0 3em;
+  letter-spacing: 7px;
+  font-weight: 700;
+  color: #f07818;
+}
+.three {
+  font-size: 1.5em;
+  color: #5d4b33;
+  font-weight: 800;
+  padding: 0.5em 3em;
+  border: 7px solid #5d4b33;
+  transition: 0.5s all ease;
+  cursor: pointer;
+}
+</style>

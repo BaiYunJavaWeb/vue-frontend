@@ -6,9 +6,19 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: () => import('../views/HomeView.vue')
+      component: () => import('../views/HomeView.vue'),
+      meta: {
+        title: 'Shopping'
+      }
     }
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    document.title = to.meta.title as string
+  }
+  next()
 })
 
 export default router
