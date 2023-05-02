@@ -1,16 +1,21 @@
 <template>
   <div class="wrap">
-    <div class="new">
-      <a-alert style="height: 60px; margin: 20px 0" message="新品推荐" type="info" />
+    <div class="recom">
+      <a-alert style="height: 60px; margin: 20px 0" :message="props.title" :type="props.alert" />
       <div class="list">
         <div style="margin: 10px" v-for="item in props.item" :key="item.name">
           <img
             :src="'http://localhost:1314/' + item.cover"
-            width="250"
+            :width="props.width"
             @mouseenter="show($event)"
             @mouseleave="hide($event)"
           />
-          <div class="detail" @mouseenter="show($event)" @mouseleave="hide($event)">
+          <div
+            :style="{ width: props.width + 'px' }"
+            class="detail"
+            @mouseenter="show($event)"
+            @mouseleave="hide($event)"
+          >
             <div style="cursor: pointer" @click="detail(item.id)"><eye-outlined />查看详情</div>
             <div style="cursor: pointer" @click="incart(item.id)" class="inchart">加入购物车</div>
           </div>
@@ -47,6 +52,9 @@ interface Item {
 
 const props = defineProps<{
   item: Array<Item>
+  width: string
+  title: string
+  alert: string
 }>()
 
 const show = (e: any) => {
@@ -72,7 +80,7 @@ const incart = (id: number) => {
   margin-top: 100px;
   padding-top: 10px;
 }
-.new {
+.recom {
   width: 1140px;
   margin: 0 auto;
 }
@@ -94,7 +102,6 @@ const incart = (id: number) => {
   color: white;
   background-color: rgba(0, 0, 0, 0.499);
   position: absolute;
-  width: 250px;
   transform: translateY(-36px);
 }
 .inchart {
