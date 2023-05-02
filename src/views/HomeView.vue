@@ -16,16 +16,14 @@
           </template>
           <template #title>商品分类</template>
           <a-menu-item-group title="商品分类">
-            <a-menu-item key="4-1">经典系列</a-menu-item>
-            <a-menu-item key="4-2">法式系列</a-menu-item>
-            <a-menu-item key="4-3">儿童系列</a-menu-item>
-            <a-menu-item key="4-4">零食系列</a-menu-item>
-            <a-menu-item key="4-5">冰淇淋系列</a-menu-item>
+            <a-menu-item :type="foodtype.id" v-for="foodtype in typeList" :key="`2-${foodtype.id}`">
+              {{ foodtype.name }}
+            </a-menu-item>
           </a-menu-item-group>
         </a-sub-menu>
         <a-menu-item key="3">热销</a-menu-item>
         <a-menu-item key="4">新品</a-menu-item>
-        <template v-if="logged">
+        <template v-if="homeStore.userLogged">
           <a-menu-item key="5">我的订单</a-menu-item>
           <a-menu-item key="6">个人中心</a-menu-item>
           <a-menu-item key="7">退出</a-menu-item>
@@ -55,11 +53,21 @@ import Register from '@/components/Register/Register.vue'
 import Login from '@/components/Login/Login.vue'
 import { ref, shallowRef } from 'vue'
 import { ExpandAltOutlined } from '@ant-design/icons-vue'
-
+import { useHomeStore } from '@/stores/home.store'
+const homeStore = useHomeStore()
 const selectedKeys = ref<string[]>(['1'])
 const currentComponent = shallowRef(Index)
 
-const logged = ref(false)
+interface IType {
+  id: number
+  name: string
+}
+
+const typeList = ref<IType[]>()
+
+homeStore.getTypeList().then((data) => {
+  typeList.value = data as IType[]
+})
 
 const handleClick = (e: any) => {
   switch (e.key) {
