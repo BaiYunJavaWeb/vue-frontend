@@ -63,10 +63,15 @@ export const useHomeStore = defineStore('home', {
         'good/goodList/5': { component: ProductVue, currentProduct: '/good/goodList/5/1' },
         'top/topList/2': { component: ProductVue, currentProduct: '/top/topList/2/1' },
         'top/topList/3': { component: ProductVue, currentProduct: '/top/topList/3/1' },
+        // 我的订单
         '5': {},
+        // 个人中心
         '6': {},
+        // 退出
+        '7': {},
         '8': { component: RegisterVue },
         '9': { component: LoginVue },
+        // 后台管理
         '10': {}
       }
       const key = e.key.toString()

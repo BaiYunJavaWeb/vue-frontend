@@ -10,6 +10,22 @@ const router = createRouter({
       meta: {
         title: 'Shopping'
       }
+    },
+    {
+      path: '/manage',
+      name: 'manage',
+      component: () => import('../views/AdminView.vue'),
+      meta: {
+        title: 'Shopping后台管理'
+      }
+    },
+    {
+      path: '/adminlogin',
+      name: 'adminlogin',
+      component: () => import('../views/AdminLogin.vue'),
+      meta: {
+        title: '管理员登录'
+      }
     }
   ]
 })
