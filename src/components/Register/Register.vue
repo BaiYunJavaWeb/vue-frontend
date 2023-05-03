@@ -61,6 +61,7 @@
 import { reactive, ref } from 'vue'
 import Login from '../Login/Login.vue'
 import { useHomeStore } from '@/stores/home.store'
+import { encode } from '@/utils/crypto.util'
 const homeStore = useHomeStore()
 
 const visible = ref<boolean>(false)
@@ -88,7 +89,7 @@ const formState = reactive<FormState>({
 const onFinish = (values: any) => {
   fetch(`http://localhost:1314/user/register`, {
     method: 'POST',
-    body: JSON.stringify(formState),
+    body: JSON.stringify({ ...formState, password: encode(formState.password) }),
     headers: {
       'content-type': 'application/json'
     }
