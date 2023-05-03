@@ -1,14 +1,34 @@
-import HotVue from '@/components/Hot/Hot.vue'
 import IndexVue from '@/components/Index/Index.vue'
 import LoginVue from '@/components/Login/Login.vue'
-import NewVue from '@/components/New/New.vue'
 import RegisterVue from '@/components/Register/Register.vue'
+import ProductVue from '@/components/ProductList/ProductList.vue'
 import { defineStore } from 'pinia'
 import { shallowRef, type Component } from 'vue'
+
+interface Item {
+  id: number
+  name: string
+  cover: string
+  image1: string
+  image2: string
+  price: number
+  intro: string
+  stock: number
+  typeId: number
+}
 
 interface IType {
   id: number
   name: string
+}
+
+interface ComponentConfig {
+  component?: Component
+  currentProduct?: string
+}
+
+interface IComponentMap {
+  [key: string]: ComponentConfig
 }
 
 export const useHomeStore = defineStore('home', {
@@ -16,7 +36,8 @@ export const useHomeStore = defineStore('home', {
     userLogged: false,
     typeList: [] as IType[],
     currentComponent: shallowRef<Component>(IndexVue),
-    selectedKeys: ['1']
+    selectedKeys: ['1'],
+    productList: [] as Item[]
   }),
   actions: {
     async getTypeList(): Promise<IType[]> {
@@ -32,27 +53,44 @@ export const useHomeStore = defineStore('home', {
           })
       })
     },
-    handleClick(e: any) {
-      switch (e.key) {
-        case '1':
-          this.currentComponent = IndexVue
-          break
-        case '3':
-          this.currentComponent = HotVue
-          break
-        case '4':
-          this.currentComponent = NewVue
-          break
-        case '8':
-          this.currentComponent = RegisterVue
-          break
-        case '9':
-          this.currentComponent = LoginVue
-          break
-        default:
-          this.currentComponent = IndexVue
-          break
+    async handleMenuClick(e: any) {
+      const componentMap: IComponentMap = {
+        '1': { component: IndexVue },
+        'good/goodList/1': { component: ProductVue, currentProduct: '/good/goodList/1/1' },
+        'good/goodList/2': { component: ProductVue, currentProduct: '/good/goodList/2/1' },
+        'good/goodList/3': { component: ProductVue, currentProduct: '/good/goodList/3/1' },
+        'good/goodList/4': { component: ProductVue, currentProduct: '/good/goodList/4/1' },
+        'good/goodList/5': { component: ProductVue, currentProduct: '/good/goodList/5/1' },
+        'top/topList/2': { component: ProductVue, currentProduct: '/top/topList/2/1' },
+        'top/topList/3': { component: ProductVue, currentProduct: '/top/topList/3/1' },
+        '5': {},
+        '6': {},
+        '8': { component: RegisterVue },
+        '9': { component: LoginVue },
+        '10': {}
       }
+      const key = e.key.toString()
+      const { component, currentProduct } = componentMap[key]
+      if (!component) {
+        return
+      }
+      if (currentProduct) {
+        await fetch(`http://localhost:1314${currentProduct}`)
+          .then((res) => res.json())
+          .then((data) => {
+            this.productList = data.msg
+          })
+      }
+      this.currentComponent = component!
+    },
+    async handlePage(pageNumber: number) {
+      fetch(`http://localhost:1314/${this.selectedKeys[0]}/${pageNumber}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.msg.length) {
+            this.productList = data.msg
+          }
+        })
     }
   }
 })

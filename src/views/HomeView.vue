@@ -7,7 +7,7 @@
         v-model:selectedKeys="homeStore.selectedKeys"
         mode="horizontal"
         :style="{ lineHeight: '64px', backgroundColor: 'white', width: '100%' }"
-        @click="homeStore.handleClick"
+        @click="homeStore.handleMenuClick"
       >
         <a-menu-item key="1">首页</a-menu-item>
         <a-sub-menu popupClassName="submen" key="2">
@@ -19,14 +19,14 @@
             <a-menu-item
               :type="foodtype.id"
               v-for="foodtype in homeStore.typeList"
-              :key="`2-${foodtype.id}`"
+              :key="`good/goodList/${foodtype.id}`"
             >
               {{ foodtype.name }}
             </a-menu-item>
           </a-menu-item-group>
         </a-sub-menu>
-        <a-menu-item key="3">热销</a-menu-item>
-        <a-menu-item key="4">新品</a-menu-item>
+        <a-menu-item key="top/topList/2">热销</a-menu-item>
+        <a-menu-item key="top/topList/3">新品</a-menu-item>
         <template v-if="homeStore.userLogged">
           <a-menu-item key="5">我的订单</a-menu-item>
           <a-menu-item key="6">个人中心</a-menu-item>
