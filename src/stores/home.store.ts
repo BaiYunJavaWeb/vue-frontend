@@ -109,7 +109,7 @@ export const useHomeStore = defineStore('home', {
         })
     },
     initUser(username: string) {
-      fetch(`http://localhost:1314/user/${this.userInfo.username}`)
+      fetch(`http://localhost:1314/user/${username}`)
         .then((res) => res.json())
         .then((data) => {
           this.userInfo = data.msg
