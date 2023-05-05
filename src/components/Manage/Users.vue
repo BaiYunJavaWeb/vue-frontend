@@ -1,75 +1,81 @@
 <template>
-  <a-button style="margin: 10px" type="primary" @click="addUser">添加客户</a-button>
-  <a-table v-if="manageStore.userList.length" :dataSource="manageStore.userList" :columns="columns">
-    <template #bodyCell="{ column, record }">
-      <template v-if="column.key === 'action'">
-        <a-button style="margin-right: 5px" type="primary" @click="resetPsw(record.id)">
-          重置密码
-        </a-button>
-        <a-button style="margin-right: 5px" type="primary" @click="updateUser(record.id)">
-          修改
-        </a-button>
-        <a-popconfirm
-          title="确定删除该用户吗?"
-          ok-text="确定"
-          cancel-text="取消"
-          @confirm="remove(record.id)"
-        >
-          <a-button style="margin-right: 5px" type="primary" danger> 删除 </a-button>
-        </a-popconfirm>
+  <div class="content">
+    <a-button style="margin: 10px" type="primary" @click="addUser">添加客户</a-button>
+    <a-table
+      v-if="manageStore.userList.length"
+      :dataSource="manageStore.userList"
+      :columns="columns"
+    >
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'action'">
+          <a-button style="margin-right: 5px" type="primary" @click="resetPsw(record.id)">
+            重置密码
+          </a-button>
+          <a-button style="margin-right: 5px" type="primary" @click="updateUser(record.id)">
+            修改
+          </a-button>
+          <a-popconfirm
+            title="确定删除该用户吗?"
+            ok-text="确定"
+            cancel-text="取消"
+            @confirm="remove(record.id)"
+          >
+            <a-button style="margin-right: 5px" type="primary" danger> 删除 </a-button>
+          </a-popconfirm>
+        </template>
       </template>
-    </template>
-  </a-table>
+    </a-table>
 
-  <a-modal
-    v-model:visible="visible"
-    :title="title == 1 ? '新增用户' : '更新用户信息'"
-    okText="确定"
-    cancelText="取消"
-    @ok="conform"
-  >
-    <a-form :model="manageStore.userForm" name="basic" autocomplete="off">
-      <a-form-item
-        label="用户名"
-        name="username"
-        :rules="[{ required: true, message: '请输入用户名!' }]"
-      >
-        <a-input v-model:value="manageStore.userForm.username" />
-      </a-form-item>
+    <a-modal
+      v-model:visible="visible"
+      :title="title == 1 ? '新增用户' : '更新用户信息'"
+      okText="确定"
+      cancelText="取消"
+      @ok="conform"
+    >
+      <a-form :model="manageStore.userForm" name="basic" autocomplete="off">
+        <a-form-item
+          label="用户名"
+          name="username"
+          :rules="[{ required: true, message: '请输入用户名!' }]"
+        >
+          <a-input v-model:value="manageStore.userForm.username" />
+        </a-form-item>
 
-      <a-form-item
-        label="密码"
-        name="password"
-        :rules="[{ required: true, message: '请输入密码!' }]"
-      >
-        <a-input v-model:value="manageStore.userForm.password" />
-      </a-form-item>
+        <a-form-item
+          label="密码"
+          name="password"
+          :rules="[{ required: true, message: '请输入密码!' }]"
+        >
+          <a-input v-model:value="manageStore.userForm.password" />
+        </a-form-item>
 
-      <a-form-item
-        label="收货人"
-        name="name"
-        :rules="[{ required: true, message: '请输入收货人姓名!' }]"
-      >
-        <a-input v-model:value="manageStore.userForm.name" />
-      </a-form-item>
+        <a-form-item
+          label="收货人"
+          name="name"
+          :rules="[{ required: true, message: '请输入收货人姓名!' }]"
+        >
+          <a-input v-model:value="manageStore.userForm.name" />
+        </a-form-item>
 
-      <a-form-item
-        label="联系电话"
-        name="phone"
-        :rules="[{ required: true, message: '请输入联系电话!' }]"
-      >
-        <a-input v-model:value="manageStore.userForm.phone" />
-      </a-form-item>
+        <a-form-item
+          label="联系电话"
+          name="phone"
+          :rules="[{ required: true, message: '请输入联系电话!' }]"
+        >
+          <a-input v-model:value="manageStore.userForm.phone" />
+        </a-form-item>
 
-      <a-form-item
-        label="收货地址"
-        name="address"
-        :rules="[{ required: true, message: '请输入收货地址!' }]"
-      >
-        <a-input v-model:value="manageStore.userForm.address" />
-      </a-form-item>
-    </a-form>
-  </a-modal>
+        <a-form-item
+          label="收货地址"
+          name="address"
+          :rules="[{ required: true, message: '请输入收货地址!' }]"
+        >
+          <a-input v-model:value="manageStore.userForm.address" />
+        </a-form-item>
+      </a-form>
+    </a-modal>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -180,4 +186,8 @@ const resetPsw = (id: number) => {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.content {
+  min-height: 800px;
+}
+</style>
