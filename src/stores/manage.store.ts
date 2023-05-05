@@ -149,6 +149,10 @@ export const useManageStore = defineStore('manage', {
             this.getTypeList()
           }
         })
+    },
+    init() {
+      this.selectedKeys = ['3']
+      this.currentComponent = Goods
     }
   },
   persist: {

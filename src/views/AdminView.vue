@@ -35,6 +35,7 @@
 import router from '@/router'
 import { useManageStore } from '@/stores/manage.store'
 const manageStore = useManageStore()
+manageStore.init()
 </script>
 
 <style scoped>
