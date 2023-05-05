@@ -2,6 +2,7 @@ import IndexVue from '@/components/Index/Index.vue'
 import LoginVue from '@/components/Login/Login.vue'
 import RegisterVue from '@/components/Register/Register.vue'
 import ProductVue from '@/components/ProductList/ProductList.vue'
+import UserVue from '@/components/User/User.vue'
 import { defineStore } from 'pinia'
 import { shallowRef, type Component } from 'vue'
 
@@ -15,6 +16,14 @@ interface Item {
   intro: string
   stock: number
   typeId: number
+}
+interface IUser {
+  id: number
+  username: string
+  password: string
+  name: string
+  phone: number
+  address: string
 }
 
 interface IType {
@@ -34,6 +43,7 @@ interface IComponentMap {
 export const useHomeStore = defineStore('home', {
   state: () => ({
     userLogged: false,
+    userInfo: {} as IUser,
     typeList: [] as IType[],
     currentComponent: shallowRef<Component>(IndexVue),
     selectedKeys: ['1'],
@@ -66,7 +76,7 @@ export const useHomeStore = defineStore('home', {
         // 我的订单
         '5': {},
         // 个人中心
-        '6': {},
+        '6': { component: UserVue },
         // 退出
         '7': {},
         '8': { component: RegisterVue },
@@ -96,6 +106,26 @@ export const useHomeStore = defineStore('home', {
             this.productList = data.msg
           }
         })
+    },
+    initUser(username: string) {
+      fetch(`http://localhost:1314/user/${this.userInfo.username}`)
+        .then((res) => res.json())
+        .then((data) => {
+          this.userInfo = data.msg
+        })
+    },
+    initPage() {
+      this.getTypeList()
+      this.currentComponent = IndexVue
+      this.selectedKeys = ['1']
     }
+  },
+  persist: {
+    enabled: true,
+    strategies: [
+      {
+        storage: localStorage // 选择存储方式
+      }
+    ]
   }
 })

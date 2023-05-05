@@ -53,7 +53,7 @@
 import { ExpandAltOutlined } from '@ant-design/icons-vue'
 import { useHomeStore } from '@/stores/home.store'
 const homeStore = useHomeStore()
-homeStore.getTypeList()
+homeStore.initPage()
 </script>
 <style scoped>
 .bg {

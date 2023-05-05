@@ -80,6 +80,7 @@ const onFinish = (values: any) => {
     } else if (res.status === 200) {
       homeStore.selectedKeys = ['1']
       homeStore.currentComponent = Index
+      homeStore.initUser(formState.username)
       homeStore.userLogged = true
     }
   })
