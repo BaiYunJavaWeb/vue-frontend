@@ -70,7 +70,7 @@ const formState = reactive<FormState>({
 const onFinish = () => {
   fetch(`http://localhost:1314/admin/login`, {
     method: 'POST',
-    body: JSON.stringify({ ...formState, password: encode(formState.password) }),
+    body: JSON.stringify({ ...formState, oldPassword: encode(formState.password) }),
     headers: {
       'content-type': 'application/json'
     }
