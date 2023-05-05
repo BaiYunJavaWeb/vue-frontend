@@ -49,6 +49,7 @@ declare module '@vue/runtime-core' {
     New: typeof import('./src/components/New/New.vue')['default']
     Order: typeof import('./src/components/Order/Order.vue')['default']
     Orders: typeof import('./src/components/Manage/Orders.vue')['default']
+    OrderTable: typeof import('./src/components/OrderTable/OrderTable.vue')['default']
     Password: typeof import('./src/components/Manage/Password.vue')['default']
     Pay: typeof import('./src/components/Pay/Pay.vue')['default']
     ProductList: typeof import('./src/components/ProductList/ProductList.vue')['default']

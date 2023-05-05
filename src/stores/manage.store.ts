@@ -44,6 +44,20 @@ interface IType {
   name: string
 }
 
+interface IOrder {
+  id: number
+  total: number
+  amount: number
+  status: number
+  paytype: number
+  name: number
+  phone: number
+  address: number
+  systime: Date
+  userId: number
+  goodName: string
+}
+
 export const useManageStore = defineStore('manage', {
   state: () => ({
     adminLogged: false,
@@ -58,7 +72,12 @@ export const useManageStore = defineStore('manage', {
     goodForm: {} as IGood,
     userList: [] as IUser[],
     userForm: {} as IUser,
-    typeForm: {} as IType
+    typeForm: {} as IType,
+    orderList: [] as IOrder[],
+    orderUnpay: [] as IOrder[],
+    orderPayed: [] as IOrder[],
+    orderDelivery: [] as IOrder[],
+    orderDone: [] as IOrder[]
   }),
   actions: {
     handleMenuClick(e: any) {
@@ -97,6 +116,18 @@ export const useManageStore = defineStore('manage', {
         .then((res) => res.json())
         .then((data) => {
           this.userList = data.msg
+        })
+    },
+    getOrderList() {
+      fetch('http://localhost:1314/order/orderList')
+        .then((res) => res.json())
+        .then((data) => {
+          const { msg } = data
+          this.orderList = msg
+          this.orderUnpay = msg.filter((el: IOrder) => el.status == 1)
+          this.orderPayed = msg.filter((el: IOrder) => el.status == 2)
+          this.orderDelivery = msg.filter((el: IOrder) => el.status == 3)
+          this.orderDone = msg.filter((el: IOrder) => el.status == 4)
         })
     },
     removeGood(id: number) {
@@ -149,6 +180,22 @@ export const useManageStore = defineStore('manage', {
             this.getTypeList()
           }
         })
+    },
+    setStatus(orderid: number, status: number) {
+      fetch('http://localhost:1314/order/orderStatus', {
+        method: 'PUT',
+        body: JSON.stringify({
+          id: orderid,
+          status: status
+        }),
+        headers: {
+          'content-type': 'application/json'
+        }
+      }).then((res) => {
+        if (res.status == 200) {
+          this.getOrderList()
+        }
+      })
     },
     init() {
       this.selectedKeys = ['3']
