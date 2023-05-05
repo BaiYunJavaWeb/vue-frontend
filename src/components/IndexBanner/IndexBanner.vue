@@ -1,7 +1,7 @@
 <template>
   <div class="banner">
     <div>
-      <div class="one">{{ props.item[0].name }}</div>
+      <div class="one" @click="detail">{{ props.item[0].name }}</div>
       <div class="two">今日精选推荐</div>
       <div class="three">加入购物车</div>
     </div>
@@ -12,6 +12,9 @@
 </template>
 
 <script setup lang="ts">
+import { useHomeStore } from '@/stores/home.store'
+import Detail from '../Detail/Detail.vue'
+const homeStore = useHomeStore()
 const props = defineProps<{
   item: Array<{
     id: number
@@ -25,6 +28,11 @@ const props = defineProps<{
     typeId: number
   }>
 }>()
+
+const detail = () => {
+  homeStore.detail = props.item[0]
+  homeStore.currentComponent = Detail
+}
 </script>
 
 <style scoped>

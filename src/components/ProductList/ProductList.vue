@@ -2,7 +2,12 @@
   <div class="wrap">
     <div class="wrapc">
       <div class="card" v-for="product in homeStore.productList">
-        <img :src="'http://localhost:1314/' + product.cover" width="240" />
+        <img
+          style="cursor: pointer"
+          :src="'http://localhost:1314/' + product.cover"
+          width="240"
+          @click="detail(product)"
+        />
         <div class="name">{{ product.name }}</div>
         <div class="price">￥{{ product.price }}</div>
         <a-button style="float: right">加入购物车</a-button>
@@ -25,12 +30,18 @@
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import { useHomeStore } from '@/stores/home.store'
 import { ref } from 'vue'
+import Detail from '../Detail/Detail.vue'
 const homeStore = useHomeStore()
 
 const current = ref<number>(1)
 
 const onChange = (pageNumber: number) => {
   homeStore.handlePage(pageNumber)
+}
+
+const detail = (product: any) => {
+  homeStore.detail = product
+  homeStore.currentComponent = Detail
 }
 </script>
 

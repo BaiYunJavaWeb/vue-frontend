@@ -11,6 +11,7 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AAlert: typeof import('ant-design-vue/es')['Alert']
     AButton: typeof import('ant-design-vue/es')['Button']
+    ACarousel: typeof import('ant-design-vue/es')['Carousel']
     AConfigProvider: typeof import('ant-design-vue/es')['ConfigProvider']
     AForm: typeof import('ant-design-vue/es')['Form']
     AFormItem: typeof import('ant-design-vue/es')['FormItem']
@@ -38,6 +39,7 @@ declare module '@vue/runtime-core' {
     ATextarea: typeof import('ant-design-vue/es')['Textarea']
     AUpload: typeof import('ant-design-vue/es')['Upload']
     CusTable: typeof import('./src/components/CusTable/CusTable.vue')['default']
+    Detail: typeof import('./src/components/Detail/Detail.vue')['default']
     Goods: typeof import('./src/components/Manage/Goods.vue')['default']
     Hot: typeof import('./src/components/Hot/Hot.vue')['default']
     Index: typeof import('./src/components/Index/Index.vue')['default']

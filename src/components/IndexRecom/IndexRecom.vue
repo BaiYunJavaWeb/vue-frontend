@@ -36,6 +36,7 @@
 <script setup lang="ts">
 import { EyeOutlined } from '@ant-design/icons-vue'
 import { useHomeStore } from '@/stores/home.store'
+import Detail from '../Detail/Detail.vue'
 const homeStore = useHomeStore()
 interface Item {
   id: number
@@ -66,7 +67,8 @@ const hide = (e: any) => {
 }
 
 const detail = (id: number) => {
-  console.log(`查看详情${id}`)
+  homeStore.detail = props.item.filter((el) => el.id == id)[0]
+  homeStore.currentComponent = Detail
 }
 
 const incart = (id: number) => {

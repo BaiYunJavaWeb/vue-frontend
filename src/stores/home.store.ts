@@ -47,7 +47,8 @@ export const useHomeStore = defineStore('home', {
     typeList: [] as IType[],
     currentComponent: shallowRef<Component>(IndexVue),
     selectedKeys: ['1'],
-    productList: [] as Item[]
+    productList: [] as Item[],
+    detail: {} as Item
   }),
   actions: {
     async getTypeList(): Promise<IType[]> {
