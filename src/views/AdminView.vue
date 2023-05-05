@@ -15,7 +15,9 @@
         <a-menu-item key="3">商品管理</a-menu-item>
         <a-menu-item key="4">类目管理</a-menu-item>
         <a-menu-item key="5">修改密码</a-menu-item>
-        <a-menu-item key="6">退出</a-menu-item>
+        <a-menu-item key="6" @click=";(manageStore.adminLogged = false), router.push('adminlogin')">
+          退出
+        </a-menu-item>
       </a-menu>
     </a-layout-header>
     <a-layout-content>
@@ -30,6 +32,7 @@
 </template>
 
 <script setup lang="ts">
+import router from '@/router'
 import { useManageStore } from '@/stores/manage.store'
 const manageStore = useManageStore()
 </script>
