@@ -3,7 +3,7 @@
     <div>
       <div class="one" @click="detail">{{ props.item[0].name }}</div>
       <div class="two">今日精选推荐</div>
-      <div class="three">加入购物车</div>
+      <div class="three" @click="addToCart(props.item[0])">加入购物车</div>
     </div>
     <div>
       <img :src="'http://localhost:1314/' + props.item[0].cover" width="350" height="350" />
@@ -32,6 +32,18 @@ const props = defineProps<{
 const detail = () => {
   homeStore.detail = props.item[0]
   homeStore.currentComponent = Detail
+}
+const addToCart = (good: (typeof props.item)[0]) => {
+  if (homeStore.cart.length && homeStore.cart.filter((el) => el.id == good.id)) {
+    homeStore.cart[homeStore.cart.findIndex((el) => el.id == good.id)].num += 1
+  } else {
+    homeStore.cart.push({
+      id: good.id,
+      name: good.name,
+      price: good.price,
+      num: 1
+    })
+  }
 }
 </script>
 

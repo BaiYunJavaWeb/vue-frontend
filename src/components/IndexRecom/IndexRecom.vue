@@ -17,7 +17,7 @@
             @mouseleave="hide($event)"
           >
             <div style="cursor: pointer" @click="detail(item.id)"><eye-outlined />查看详情</div>
-            <div style="cursor: pointer" @click="incart(item.id)" class="inchart">加入购物车</div>
+            <div style="cursor: pointer" @click="addToCart(item)" class="inchart">加入购物车</div>
           </div>
           <div>
             <div class="misc" v-if="homeStore.typeList">
@@ -71,8 +71,17 @@ const detail = (id: number) => {
   homeStore.currentComponent = Detail
 }
 
-const incart = (id: number) => {
-  console.log(`加入购物车${id}`)
+const addToCart = (good: (typeof props.item)[0]) => {
+  if (homeStore.cart.length && homeStore.cart.filter((el) => el.id == good.id)[0]) {
+    homeStore.cart[homeStore.cart.findIndex((el) => el.id == good.id)].num += 1
+  } else {
+    homeStore.cart.push({
+      id: good.id,
+      name: good.name,
+      price: good.price,
+      num: 1
+    })
+  }
 }
 </script>
 

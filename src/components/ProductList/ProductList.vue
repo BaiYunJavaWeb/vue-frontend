@@ -10,7 +10,7 @@
         />
         <div class="name">{{ product.name }}</div>
         <div class="price">￥{{ product.price }}</div>
-        <a-button style="float: right">加入购物车</a-button>
+        <a-button style="float: right" @click="addToCart(product)">加入购物车</a-button>
       </div>
     </div>
     <div class="pagination">
@@ -42,6 +42,19 @@ const onChange = (pageNumber: number) => {
 const detail = (product: any) => {
   homeStore.detail = product
   homeStore.currentComponent = Detail
+}
+
+const addToCart = (good: any) => {
+  if (homeStore.cart.length && homeStore.cart.filter((el) => el.id == good.id)[0]) {
+    homeStore.cart[homeStore.cart.findIndex((el) => el.id == good.id)].num += 1
+  } else {
+    homeStore.cart.push({
+      id: good.id,
+      name: good.name,
+      price: good.price,
+      num: 1
+    })
+  }
 }
 </script>
 

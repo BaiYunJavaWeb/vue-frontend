@@ -4,6 +4,7 @@ import RegisterVue from '@/components/Register/Register.vue'
 import ProductVue from '@/components/ProductList/ProductList.vue'
 import UserVue from '@/components/User/User.vue'
 import OrderVue from '@/components/Order/Order.vue'
+import MyCart from '@/components/MyCart/MyCart.vue'
 import { defineStore } from 'pinia'
 import { shallowRef, type Component } from 'vue'
 
@@ -46,6 +47,13 @@ interface IOrder {
   goodName: string
 }
 
+interface ICart {
+  id: number
+  name: string
+  price: number
+  num: number
+}
+
 interface ComponentConfig {
   component?: Component
   currentProduct?: string
@@ -65,7 +73,8 @@ export const useHomeStore = defineStore('home', {
     productList: [] as Item[],
     detail: {} as Item,
     orders: [] as IOrder[],
-    orderid: 0
+    orderid: 0,
+    cart: [] as ICart[]
   }),
   actions: {
     async getTypeList(): Promise<IType[]> {
@@ -100,7 +109,8 @@ export const useHomeStore = defineStore('home', {
         '8': { component: RegisterVue },
         '9': { component: LoginVue },
         // 后台管理
-        '10': {}
+        '10': {},
+        '11': { component: MyCart }
       }
       const key = e.key.toString()
       const { component, currentProduct } = componentMap[key]

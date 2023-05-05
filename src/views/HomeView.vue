@@ -37,6 +37,7 @@
           <a-menu-item key="9">登录</a-menu-item>
         </template>
         <a-menu-item key="10" @click="$router.push('adminlogin')">后台管理</a-menu-item>
+        <a-menu-item key="11">购物车</a-menu-item>
       </a-menu>
     </a-layout-header>
     <a-layout-content>
