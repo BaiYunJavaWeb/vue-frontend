@@ -3,6 +3,7 @@ import LoginVue from '@/components/Login/Login.vue'
 import RegisterVue from '@/components/Register/Register.vue'
 import ProductVue from '@/components/ProductList/ProductList.vue'
 import UserVue from '@/components/User/User.vue'
+import OrderVue from '@/components/Order/Order.vue'
 import { defineStore } from 'pinia'
 import { shallowRef, type Component } from 'vue'
 
@@ -31,6 +32,20 @@ interface IType {
   name: string
 }
 
+interface IOrder {
+  id: number
+  total: number
+  amount: number
+  status: number
+  paytype: number
+  name: number
+  phone: number
+  address: number
+  systime: Date
+  user_id: number
+  goodName: string
+}
+
 interface ComponentConfig {
   component?: Component
   currentProduct?: string
@@ -48,7 +63,9 @@ export const useHomeStore = defineStore('home', {
     currentComponent: shallowRef<Component>(IndexVue),
     selectedKeys: ['1'],
     productList: [] as Item[],
-    detail: {} as Item
+    detail: {} as Item,
+    orders: [] as IOrder[],
+    orderid: 0
   }),
   actions: {
     async getTypeList(): Promise<IType[]> {
@@ -75,7 +92,7 @@ export const useHomeStore = defineStore('home', {
         'top/topList/2': { component: ProductVue, currentProduct: '/top/topList/2/1' },
         'top/topList/3': { component: ProductVue, currentProduct: '/top/topList/3/1' },
         // 我的订单
-        '5': {},
+        '5': { component: OrderVue },
         // 个人中心
         '6': { component: UserVue },
         // 退出
@@ -119,6 +136,19 @@ export const useHomeStore = defineStore('home', {
       this.getTypeList()
       this.currentComponent = IndexVue
       this.selectedKeys = ['1']
+    },
+    initOrder() {
+      fetch('http://localhost:1314/order/orders', {
+        method: 'POST',
+        body: JSON.stringify({ id: this.userInfo.id }),
+        headers: {
+          'content-type': 'application/json'
+        }
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          this.orders = data.msg
+        })
     }
   },
   persist: {
