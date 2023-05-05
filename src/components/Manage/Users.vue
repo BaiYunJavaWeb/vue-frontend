@@ -80,6 +80,7 @@
 
 <script setup lang="ts">
 import { useManageStore } from '@/stores/manage.store'
+import { encode } from '@/utils/crypto.util'
 import { ref } from 'vue'
 const manageStore = useManageStore()
 
@@ -143,7 +144,10 @@ const conform = () => {
       headers: {
         'content-type': 'application/json'
       },
-      body: JSON.stringify(manageStore.userForm)
+      body: JSON.stringify({
+        ...manageStore.userForm,
+        password: encode(manageStore.userForm.password)
+      })
     }).then((res) => {
       if (res.status == 200) {
         visible.value = false
@@ -157,7 +161,10 @@ const conform = () => {
       headers: {
         'content-type': 'application/json'
       },
-      body: JSON.stringify(manageStore.userForm)
+      body: JSON.stringify({
+        ...manageStore.userForm,
+        password: encode(manageStore.userForm.password)
+      })
     }).then((res) => {
       if (res.status == 200) {
         visible.value = false

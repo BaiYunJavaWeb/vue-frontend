@@ -57,7 +57,8 @@ export const useManageStore = defineStore('manage', {
     goodNew: [] as IGood[],
     goodForm: {} as IGood,
     userList: [] as IUser[],
-    userForm: {} as IUser
+    userForm: {} as IUser,
+    typeForm: {} as IType
   }),
   actions: {
     handleMenuClick(e: any) {
@@ -73,12 +74,15 @@ export const useManageStore = defineStore('manage', {
       const { component } = componentMap[key]
       this.currentComponent = component!
     },
-    getGoodList() {
+    getTypeList() {
       fetch('http://localhost:1314/type/typeList')
         .then((res) => res.json())
         .then((data) => {
           this.typeList = data.msg.typeList
         })
+    },
+    getGoodList() {
+      this.getTypeList()
       fetch('http://localhost:1314/good/goodList')
         .then((res) => res.json())
         .then((data) => {
@@ -126,6 +130,23 @@ export const useManageStore = defineStore('manage', {
         .then((data) => {
           if (data.msg.success) {
             this.getUserList()
+          }
+        })
+    },
+    removeType(id: number) {
+      fetch('http://localhost:1314/type/typeDelete', {
+        method: 'DELETE',
+        body: JSON.stringify({
+          id: id
+        }),
+        headers: {
+          'content-type': 'application/json'
+        }
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.msg.success) {
+            this.getTypeList()
           }
         })
     }
