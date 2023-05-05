@@ -29,6 +29,16 @@ interface IGood {
   [key: string]: string | number
 }
 
+interface IUser {
+  id: number
+  username: string
+  password: string
+  name: string
+  phone: number
+  address: string
+  [key: string]: string | number
+}
+
 interface IType {
   id: number
   name: string
@@ -44,7 +54,9 @@ export const useManageStore = defineStore('manage', {
     goodBanner: [] as IGood[],
     goodHot: [] as IGood[],
     goodNew: [] as IGood[],
-    goodForm: {} as IGood
+    goodForm: {} as IGood,
+    userList: [] as IUser[],
+    userForm: {} as IUser
   }),
   actions: {
     handleMenuClick(e: any) {
@@ -75,6 +87,13 @@ export const useManageStore = defineStore('manage', {
           this.goodNew = data.msg.inew
         })
     },
+    getUserList() {
+      fetch('http://localhost:1314/user/userList')
+        .then((res) => res.json())
+        .then((data) => {
+          this.userList = data.msg
+        })
+    },
     removeGood(id: number) {
       fetch('http://localhost:1314/good/goodDelete', {
         method: 'DELETE',
@@ -89,6 +108,23 @@ export const useManageStore = defineStore('manage', {
         .then((data) => {
           if (data.msg.success) {
             this.getGoodList()
+          }
+        })
+    },
+    removeUser(id: number) {
+      fetch('http://localhost:1314/user/userDelete', {
+        method: 'DELETE',
+        body: JSON.stringify({
+          id: id
+        }),
+        headers: {
+          'content-type': 'application/json'
+        }
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.msg.success) {
+            this.getUserList()
           }
         })
     }
