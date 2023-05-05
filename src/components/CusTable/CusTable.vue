@@ -108,11 +108,9 @@
         :rules="[{ required: true, message: '请输入商品类目!' }]"
       >
         <a-select ref="typeId" v-model:value="manageStore.goodForm.typeId" style="width: 120px">
-          <a-select-option value="1">冰淇淋系列</a-select-option>
-          <a-select-option value="2">零食系列</a-select-option>
-          <a-select-option value="3">儿童系列</a-select-option>
-          <a-select-option value="4">法式系列</a-select-option>
-          <a-select-option value="5">经典系列</a-select-option>
+          <a-select-option v-for="type1 in manageStore.typeList" :key="type1.id" :value="type1.id">
+            {{ type1.name }}
+          </a-select-option>
         </a-select>
       </a-form-item>
 
