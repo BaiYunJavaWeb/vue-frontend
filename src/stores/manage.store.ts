@@ -47,6 +47,7 @@ interface IType {
 export const useManageStore = defineStore('manage', {
   state: () => ({
     adminLogged: false,
+    adminName: '',
     selectedKeys: ['1'],
     currentComponent: shallowRef<Component>(Orders),
     typeList: [] as IType[],
@@ -128,5 +129,13 @@ export const useManageStore = defineStore('manage', {
           }
         })
     }
+  },
+  persist: {
+    enabled: true,
+    strategies: [
+      {
+        storage: localStorage // 选择存储方式
+      }
+    ]
   }
 })

@@ -31,10 +31,19 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.meta.title) {
-    document.title = to.meta.title as string
+  if (to.name == 'manage') {
+    const ls = JSON.parse(localStorage.getItem('manage')!)
+    if (ls && ls.adminLogged) {
+      next()
+    } else {
+      router.push('adminlogin')
+    }
+  } else {
+    if (to.meta.title) {
+      document.title = to.meta.title as string
+    }
+    next()
   }
-  next()
 })
 
 export default router

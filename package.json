@@ -17,6 +17,7 @@
     "ant-design-vue": "^3.2.20",
     "crypto-js": "^4.1.1",
     "pinia": "^2.0.32",
+    "pinia-plugin-persist": "^1.0.0",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6"
   },

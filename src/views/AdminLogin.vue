@@ -49,6 +49,8 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import { encode } from '@/utils/crypto.util'
+import { useManageStore } from '@/stores/manage.store'
+const manageStore = useManageStore()
 import router from '@/router'
 
 const visible = ref<boolean>(false)
@@ -76,9 +78,13 @@ const onFinish = () => {
     if (res.status === 401) {
       res.json().then((data) => {
         modalmsg.value = data.msg
+        manageStore.adminLogged = false
+        manageStore.adminName = ''
         visible.value = true
       })
     } else if (res.status === 200) {
+      manageStore.adminLogged = true
+      manageStore.adminName = formState.username
       router.push({ name: 'manage' })
     }
   })
