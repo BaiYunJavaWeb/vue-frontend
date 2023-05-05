@@ -30,7 +30,7 @@
         <template v-if="homeStore.userLogged">
           <a-menu-item key="5">我的订单</a-menu-item>
           <a-menu-item key="6">个人中心</a-menu-item>
-          <a-menu-item key="7">退出</a-menu-item>
+          <a-menu-item key="7" @click="signOut">退出</a-menu-item>
         </template>
         <template v-else>
           <a-menu-item key="8">注册</a-menu-item>
@@ -54,6 +54,10 @@ import { ExpandAltOutlined } from '@ant-design/icons-vue'
 import { useHomeStore } from '@/stores/home.store'
 const homeStore = useHomeStore()
 homeStore.initPage()
+const signOut = () => {
+  homeStore.userLogged = false
+  homeStore.userInfo = {} as any
+}
 </script>
 <style scoped>
 .bg {
