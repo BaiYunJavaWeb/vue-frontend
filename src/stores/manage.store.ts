@@ -26,6 +26,7 @@ interface IGood {
   stock: number
   typeId: number
   topId: number
+  [key: string]: string | number
 }
 
 interface IType {

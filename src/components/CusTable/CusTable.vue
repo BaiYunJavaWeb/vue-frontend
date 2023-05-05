@@ -5,6 +5,7 @@
       <template v-if="column.key === 'cover'">
         <img :src="'http://localhost:1314/' + record.cover" width="200" />
       </template>
+      <template v-else-if="column.key === 'price'"> ￥{{ record.price }} </template>
       <!-- 类别 -->
       <template v-else-if="column.key === 'typeId'">
         {{ manageStore.typeList.find((type) => type.id === record.typeId)?.name }}
@@ -90,22 +91,6 @@
       </a-form-item>
 
       <a-form-item
-        label="类目"
-        name="type"
-        :rules="[{ required: true, message: '请输入商品类目!' }]"
-      >
-        <a-input v-model:value="manageStore.goodForm.typeId" />
-      </a-form-item>
-
-      <a-form-item
-        label="介绍"
-        name="intro"
-        :rules="[{ required: true, message: '请输入商品介绍!' }]"
-      >
-        <a-input v-model:value="manageStore.goodForm.intro" />
-      </a-form-item>
-
-      <a-form-item
         label="库存"
         name="stock"
         :rules="[{ required: true, message: '请输入商品库存!' }]"
@@ -116,13 +101,36 @@
         </div>
       </a-form-item>
 
+      <a-form-item
+        label="类目"
+        name="typeId"
+        has-feedback
+        :rules="[{ required: true, message: '请输入商品类目!' }]"
+      >
+        <a-select ref="typeId" v-model:value="manageStore.goodForm.typeId" style="width: 120px">
+          <a-select-option value="1">冰淇淋系列</a-select-option>
+          <a-select-option value="2">零食系列</a-select-option>
+          <a-select-option value="3">儿童系列</a-select-option>
+          <a-select-option value="4">法式系列</a-select-option>
+          <a-select-option value="5">经典系列</a-select-option>
+        </a-select>
+      </a-form-item>
+
+      <a-form-item
+        label="介绍"
+        name="intro"
+        :rules="[{ required: true, message: '请输入商品介绍!' }]"
+      >
+        <a-textarea v-model:value="manageStore.goodForm.intro" />
+      </a-form-item>
+
       <a-form-item label="主图" name="cover" :rules="[{ required: true, message: '请上传主图!' }]">
         <a-upload
           v-model:file-list="coverList"
           name="file"
           :max-count="1"
           action="http://localhost:1314/good/fileUpload"
-          @change="handleChange"
+          @change="handleChange(1)"
         >
           <a-button>
             <upload-outlined></upload-outlined>
@@ -141,7 +149,7 @@
           :max-count="1"
           name="file"
           action="http://localhost:1314/good/fileUpload"
-          @change="handleChange"
+          @change="handleChange(2)"
         >
           <a-button>
             <upload-outlined></upload-outlined>
@@ -160,7 +168,7 @@
           :max-count="1"
           name="file"
           action="http://localhost:1314/good/fileUpload"
-          @change="handleChange"
+          @change="handleChange(3)"
         >
           <a-button>
             <upload-outlined></upload-outlined>
@@ -175,7 +183,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { UploadOutlined } from '@ant-design/icons-vue'
-import type { UploadChangeParam } from 'ant-design-vue'
+import type { UploadFile } from 'ant-design-vue'
 import { useManageStore } from '@/stores/manage.store'
 const manageStore = useManageStore()
 interface IGood {
@@ -195,9 +203,9 @@ const props = defineProps<{
 }>()
 
 const visible = ref<boolean>(false)
-const coverList = ref([])
-const image1List = ref([])
-const image2List = ref([])
+const coverList = ref<UploadFile[]>([])
+const image1List = ref<UploadFile[]>([])
+const image2List = ref<UploadFile[]>([])
 
 const columns = [
   {
@@ -308,14 +316,18 @@ const updateGood = () => {
     .then((data) => {
       if (data.msg.success) {
         visible.value = false
+        manageStore.goodForm = { stock: 1 } as any
         manageStore.getGoodList()
       }
     })
 }
 
-const handleChange = (info: UploadChangeParam) => {
-  if (info.file.status === 'done') {
-    console.log(manageStore.goodForm.cover)
+const handleChange = (pic: number) => {
+  const list = [coverList, image1List, image2List]
+  const fieldName = ['cover', 'image1', 'image2']
+  const currentList = list[pic - 1]
+  if (currentList.value[0].status == 'done') {
+    manageStore.goodForm[fieldName[pic - 1]] = 'picture/' + currentList.value[0].name
   }
 }
 </script>
