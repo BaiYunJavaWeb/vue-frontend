@@ -182,20 +182,38 @@ export const useManageStore = defineStore('manage', {
         })
     },
     setStatus(orderid: number, status: number) {
-      fetch('http://localhost:1314/order/orderStatus', {
-        method: 'PUT',
-        body: JSON.stringify({
-          id: orderid,
-          status: status
-        }),
-        headers: {
-          'content-type': 'application/json'
-        }
-      }).then((res) => {
-        if (res.status == 200) {
-          this.getOrderList()
-        }
-      })
+      if (status == 5) {
+        fetch('http://localhost:1314/order/orderDelete', {
+          method: 'DELETE',
+          headers: {
+            'content-type': 'application/json'
+          },
+          body: JSON.stringify({
+            id: orderid
+          })
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.msg.success) {
+              this.getOrderList()
+            }
+          })
+      } else {
+        fetch('http://localhost:1314/order/orderStatus', {
+          method: 'PUT',
+          body: JSON.stringify({
+            id: orderid,
+            status: status
+          }),
+          headers: {
+            'content-type': 'application/json'
+          }
+        }).then((res) => {
+          if (res.status == 200) {
+            this.getOrderList()
+          }
+        })
+      }
     },
     init() {
       this.selectedKeys = ['3']
